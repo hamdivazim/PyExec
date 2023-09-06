@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PyExec</title>
+  </head>
+  <body>
+    <h1>PyExec</h1>
+    <h4>Run Python within your web browser!</h4>
+    <textarea name="Text1" cols="75" rows="15" id="code" style="font-size:18px;">
+
+    </textarea>
+    <input type="button" value="Run" onclick="runPython()">
+    <p id="result"></p>
+
+    <script>
+      function runPython() {
+        let code = document.getElementById("code").value;
+        let result = document.getElementById("result");
+
+        fetch(`https://pyexecserver--hamdivazim.repl.co/exec`, {
+            method: 'POST',
+            headers: {
+                "code": code
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Failed to fetch Python code');
+            }
+        })
+        .then(pythonCode => {
+            result.innerHtml = pythonCode;
+        })
+        .catch(error => {
+            console.err(error);
+        });
+      }
+    </script>
+  </body>
+</html>
